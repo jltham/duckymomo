@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, Pressable } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { CommonActions } from "@react-navigation/native";
 
 import Screen from "../components/Screen";
@@ -33,64 +33,67 @@ export default ({ navigation }) => {
     }
 
     return (
-        <Screen scrollable style={styles.container}>
-            
-            <Logo />
-            
-            <View style={styles.textContainer}>
-                <Text style={styles.font}>
-                    Email address
-                </Text>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <Screen scrollable style={styles.container}>
+                
+                <Logo />
+                
+                <View style={styles.textContainer}>
+                    <Text style={styles.font}>
+                        Email address
+                    </Text>
 
-                <TextInput
-                value={email}
-                onChangeText={setEmail}
-                mode="outlined"
-                label="Email address"
-                placeholder="Your duck mail"
-                keyboardType="email-address"
-                autoCapitalize="none"
-                returnKeyType="next"
-                blurOnSubmit={false}
-                style={styles.input} />
+                    <TextInput
+                    value={email}
+                    onChangeText={setEmail}
+                    mode="outlined"
+                    label="Email address"
+                    placeholder="Your duck mail"
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    style={styles.input} />
 
-                <Text style={styles.font}>
-                    Password
-                </Text>
+                    <Text style={styles.font}>
+                        Password
+                    </Text>
 
-                <TextInput
-                value={password}
-                onChangeText={setPassword}
-                mode="outlined"
-                label="Password"
-                placeholder="Your secret quack"
-                autoCapitalize="none"
-                style={styles.input}
-                />
+                    <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    mode="outlined"
+                    label="Password"
+                    placeholder="Your secret quack"
+                    autoCapitalize="none"
+                    style={styles.input}
+                    secureTextEntry={true}
+                    />
 
-            </View>
-
-            <TouchableOpacity 
-            style={styles.loginButtonFinal}
-            onPress={handleLogin}
-            loading={isLoginLoading}
-            disabled={isLoginLoading}
-            >
-                <Image source={require('../../assets/login-button-final.png')}></Image>
-            </TouchableOpacity>
-
-            <View style={styles.signUpContainer}>
-                <Text style={styles.signUpText}>Don't have an account?</Text>
+                </View>
 
                 <TouchableOpacity 
-                style={styles.signUpButton}
-                onPress={() => navigation.navigate("SignUp")}
+                style={styles.loginButtonFinal}
+                onPress={handleLogin}
+                loading={isLoginLoading}
+                disabled={isLoginLoading}
                 >
-                    <Image source={require('../../assets/sign-up-button.png')}></Image>
+                    <Image source={require('../../assets/login-button-final.png')}></Image>
                 </TouchableOpacity>
-            </View>
 
-        </Screen>
+                <View style={styles.signUpContainer}>
+                    <Text style={styles.signUpText}>Don't have an account?</Text>
+
+                    <TouchableOpacity 
+                    style={styles.signUpButton}
+                    onPress={() => navigation.navigate("SignUp")}
+                    >
+                        <Image source={require('../../assets/sign-up-button.png')}></Image>
+                    </TouchableOpacity>
+                </View>
+
+            </Screen>
+        </TouchableWithoutFeedback>
     )
 }
 

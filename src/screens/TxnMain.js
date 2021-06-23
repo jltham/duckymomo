@@ -41,13 +41,15 @@ export default ({navigation}) => {
 
     return (
         <Screen style={styles.container}>
-
-            <Logo />
+            
+            <TouchableOpacity onPress={() => navigation.navigate("Main")}>
+                <Logo />
+            </TouchableOpacity>
 
             <View style={styles.info}>
                 <View style={styles.text}>
                     <Text style={styles.text1}> My Expenses </Text>
-                    <Text style={styles.text2}> ${totalExpenditure} / ${totalPrice} </Text> 
+                    <Text style={styles.text1}> ${totalExpenditure}</Text> 
                 </View>
 
                 <TouchableOpacity style={styles.adder} onPress={() => navigation.navigate("TransactionsAdder")} >
@@ -150,6 +152,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     text: {
-        marginBottom: 20
+        marginBottom: 20,
+    },
+    text1: {
+        textAlign: 'center'
     }
 })

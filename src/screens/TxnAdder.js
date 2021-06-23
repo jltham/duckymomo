@@ -7,67 +7,19 @@ import Screen from "../components/Screen";
 import Logo from "../components/Logo";
 
 export default ({navigation}) => {
-    const dispatch = useDispatch();
-    const [title, setTitle] = useState('');
-    const [price, setPrice] = useState('');
-
-    const onSubmit = () => {
-        if (!title || !price) {
-            return alert('Please fill all fields');
-        }
-
-        const id = Math.floor(Math.random() * 100000000);
-
-        const newTransaction = {
-            id,
-            title,
-            price: +price,
-        };
-
-        dispatch(addTransaction({...newTransaction}));
-        navigation.navigate("Transactions");
-    };
-
     return (
         <Screen style={styles.container}>
-                <Logo />
+            <TouchableOpacity onPress={() => navigation.navigate("Transactions")}>
+                    <Logo />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.expenseBox} onPress={() => navigation.navigate("Expense")}>
+                <Text style={styles.expense} >I spent some bills!</Text>
+            </TouchableOpacity>
 
-                <Text style={styles.mainText}> What did you spend on?</Text>
-
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Title of Expenditure</Text>
-
-                    <TextInput
-                    label="Title of Expenditure"
-                    placeholder="e.g. Shopping for clothes"
-                    style={styles.input}
-                    onChangeText={setTitle}
-                    value={title} 
-                    returnKeyType="next"
-                    blurOnSubmit={false} />
-                </View>
-
-                <View style={styles.priceContainer}>
-                    <Text style={styles.title}>Price of Expenditure</Text>
-
-                    <TextInput
-                    keyboardType='number-pad'
-                    label="Price of Expenditure"
-                    placeholder="e.g. $29.99"
-                    style={styles.input}
-                    onChangeText={setPrice}
-                    value={price} 
-                    returnKeyType="next"
-                    blurOnSubmit={false} />
-                </View>
-
-                <TouchableOpacity 
-                    onPress={onSubmit} 
-                    style={styles.submit}>
-                    <Text>Submit!</Text>
-                </TouchableOpacity>
-
-
+            <TouchableOpacity style={styles.incomeBox} onPress={() => navigation.navigate("Income")}>
+                <Text style={styles.income} >I received some bills!</Text>
+            </TouchableOpacity>
         </Screen>
     );
 }
@@ -78,19 +30,34 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
-    input: {
-        backgroundColor: "#e1e1e1",
-        height: 40,
-        width: 320,
-        borderWidth: 1,
-        borderColor: "#d0d0d0",
-        marginBottom: 20
+    expense: {
+        fontSize: 40,
+        color: "#fffdf1",
+        margin: 50,
+        textAlign: 'center'
     },
-    mainText: {
-        fontSize: 30,
-        marginBottom:30
+    expenseBox: {
+        backgroundColor: "#e08484",
+        height:250,
+        width:300,
+        justifyContent:'center',
+        alignItems: 'center',
+        borderRadius: 80,
+        margin:20
     },
-    title: {
-        fontSize: 15,
+    income: {
+        fontSize: 40,
+        color: "#fffdf1",
+        margin: 50,
+        textAlign: 'center'
     },
+    incomeBox: {
+        backgroundColor: "#90e37f",
+        height: 250,
+        width: 300, 
+        justifyContent:'center',
+        alignItems: 'center',
+        borderRadius: 80,
+        marginTop: 30
+    }
 })

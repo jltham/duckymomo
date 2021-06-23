@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { CommonActions } from "@react-navigation/native"
 
 import Screen from "../components/Screen";
@@ -34,69 +34,72 @@ export default ({ navigation }) => {
         }
 
     return (
-        <Screen scrollable style={styles.container}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <Screen scrollable style={styles.container}>
 
-            <Logo />
+                <Logo />
 
-            <View style={styles.textContainer}>
+                <View style={styles.textContainer}>
 
-                <Text style={styles.font}>
-                    Full name
-                </Text>
+                    <Text style={styles.font}>
+                        Full name
+                    </Text>
 
-                <TextInput 
-                    label="Your name"
-                    placeholder="e.g., Albert Einstein Tan Chow Boon"
-                    style={styles.input}
-                    onChangeText={onChangeName}
-                    value={username} 
-                    autoCapitalize="words"
-                    returnKeyType="next"
-                    blurOnSubmit={false}
-                />
-                
-                <Text style={styles.font}>
-                    Email address
-                </Text>
+                    <TextInput 
+                        label="Your name"
+                        placeholder="e.g., Albert Einstein Tan Chow Boon"
+                        style={styles.input}
+                        onChangeText={onChangeName}
+                        value={username} 
+                        autoCapitalize="words"
+                        returnKeyType="next"
+                        blurOnSubmit={false}
+                    />
+                    
+                    <Text style={styles.font}>
+                        Email address
+                    </Text>
 
-                <TextInput 
-                    mode="outlined"
-                    label="Email address"
-                    placeholder="e.g., josh@example.com"
-                    keyboardType="email-address"
-                    style={styles.input} 
-                    onChangeText={onChangeEmail}
-                    value={email}
-                    autoCapitalize="none"
-                    returnKeyType="next"
-                    blurOnSubmit={false}
-                />
+                    <TextInput 
+                        mode="outlined"
+                        label="Email address"
+                        placeholder="e.g., josh@example.com"
+                        keyboardType="email-address"
+                        style={styles.input} 
+                        onChangeText={onChangeEmail}
+                        value={email}
+                        autoCapitalize="none"
+                        returnKeyType="next"
+                        blurOnSubmit={false}
+                    />
 
-                <Text style={styles.font}>
-                    Password
-                </Text>
+                    <Text style={styles.font}>
+                        Password
+                    </Text>
 
-                <TextInput 
-                    mode="outlined"
-                    label="Password"
-                    placeholder="e.g., who knows?"
-                    autoCapitalize="none"
-                    style={styles.input} 
-                    onChangeText={onChangePassword}
-                    value={password}
-                />
+                    <TextInput 
+                        mode="outlined"
+                        label="Password"
+                        placeholder="e.g., who knows?"
+                        autoCapitalize="none"
+                        style={styles.input} 
+                        onChangeText={onChangePassword}
+                        value={password}
+                        secureTextEntry={true}
+                    />
 
-                <TouchableOpacity style={styles.signUpButton} onPress={handleRegister}>
-                    <Image source={require('../../assets/sign-up-button.png')}></Image>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.signUpButton} onPress={handleRegister}>
+                        <Image source={require('../../assets/sign-up-button.png')}></Image>
+                    </TouchableOpacity>
 
-                <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate("Login")}>
-                    <Image source={require('../../assets/login-button.png')}></Image>
-                </TouchableOpacity>
+                    <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate("Login")}>
+                        <Image source={require('../../assets/login-button.png')}></Image>
+                    </TouchableOpacity>
 
-            </View>
+                </View>
 
-        </Screen>
+            </Screen>
+        </TouchableWithoutFeedback>
     );
 }
 
