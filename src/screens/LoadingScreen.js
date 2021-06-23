@@ -3,6 +3,7 @@ import { StyleSheet, ActivityIndicator, Image } from 'react-native';
 import { CommonActions } from "@react-navigation/native";
 
 import Screen from "../components/Screen";
+import Logo from "../components/Logo";
 
 import * as Authentication from "../../api/auth";
 
@@ -16,7 +17,7 @@ export default ({ navigation }) => {
   
     return (
         <Screen style={styles.screen}>
-            <Image style={styles.logo} source={require('../../assets/duckymomo.png')}></Image>
+            <Logo />
             <ActivityIndicator animating size="large" color="black" />
         </Screen>
     );

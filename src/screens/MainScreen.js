@@ -1,11 +1,26 @@
 import React from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image } from 'react-native';
 
-export default function MainScreen() {
+import Logo from "../components/Logo";
+import Screen from "../components/Screen";
+import DuckBank from "../components/DuckBank";
+import DuckList from "../components/DuckList";
+
+export default ({navigation}) => {
     return (
-        <View style={styles.container}>
+        <Screen style={styles.container}>
+            <Logo />
+
             <Text> This is the main screen! </Text>
-        </View>
+
+            <TouchableOpacity style={styles.duckBank} onPress={() => navigation.navigate("Transactions")}>
+                <DuckBank />
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.duckList}>
+                <DuckList />
+            </TouchableOpacity>            
+        </Screen>
     )
 }
 
@@ -13,7 +28,18 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: '#fffdf1',
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
+    duckBank: {
+        transform: [{scale: 0.65}],
+        position: "absolute",
+        bottom: -60,
+        right: -40
+    },
+    duckList: {
+        transform: [{scale: 0.8}],
+        position: "absolute",
+        bottom: 25,
+        right: -62,
+    }
 })

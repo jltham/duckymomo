@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard } 
 import { CommonActions } from "@react-navigation/native"
 
 import Screen from "../components/Screen";
+import Logo from "../components/Logo";
 
 import * as Authentication from '../../api/auth';
 
@@ -35,7 +36,7 @@ export default ({ navigation }) => {
     return (
         <Screen scrollable style={styles.container}>
 
-            <Image style={styles.logo} source={require('../../assets/duckymomo.png')}></Image>
+            <Logo />
 
             <View style={styles.textContainer}>
 

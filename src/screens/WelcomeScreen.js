@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, View, TouchableOpacity, Image } from 'react-native';
 
+import Logo from "../components/Logo";
+
 export default function WelcomeScreen() {
     return (
         <View style={styles.container}>
 
-            <Image style={styles.logo} source={require('../../assets/duckymomo.png')}></Image>
+            <Logo />
             
             <TouchableOpacity style={styles.loginButton}>
                 <Image source={require('../../assets/login-button.png')}></Image>
