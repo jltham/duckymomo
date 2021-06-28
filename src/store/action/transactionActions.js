@@ -1,10 +1,11 @@
 import {ADD_TRANSACTION, DELETE_TRANSACTION} from './types';
 
-export const addTransaction = ({id, title, price}) => (dispatch) => {
+export const addTransaction = ({id, title, price, type}) => (dispatch) => {
   const newTransaction = {
     id, 
     title,
-    price
+    price,
+    type,
   };
 
   dispatch({type: ADD_TRANSACTION, payload: newTransaction});

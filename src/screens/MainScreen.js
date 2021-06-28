@@ -27,7 +27,7 @@ export default ({navigation}) => {
                 <DuckBank />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.duckList}>
+            <TouchableOpacity style={styles.duckList} onPress={() => navigation.navigate("To Do List")}>
                 <DuckList />
             </TouchableOpacity>            
         </Screen>
