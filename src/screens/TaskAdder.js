@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useDispatch } from 'react-redux';
 
-import { addTransaction } from '../store/action/transactionActions';
+import { addTask } from '../store/action/tasksActions';
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
 
 export default ({navigation}) => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
+    const [date, setDate] = useState('');
 
     const onSubmit = () => {
         if (!title) {
@@ -20,7 +21,6 @@ export default ({navigation}) => {
         const newTask = {
             id,
             title,
-            price
         };
 
         dispatch(addTask({...newTask}));

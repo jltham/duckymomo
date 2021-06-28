@@ -11,6 +11,8 @@ import SignUpScreen from './src/screens/SignUpScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import TxnMain from './src/screens/TxnMain';
 import ExpenseAdder from './src/screens/ExpenseAdder';
+import TasksMain from './src/screens/TasksMain';
+import TaskAdder from './src/screens/TaskAdder';
 
 import store from './src/store';
 import firebase from './api/firebase';
@@ -23,7 +25,9 @@ const screens = [
   { name: "Login", component: LoginScreen },
   { name: "Main", component: MainScreen },
   { name: "Transactions", component: TxnMain },
-  { name: "Expense", component: ExpenseAdder }
+  { name: "Expense", component: ExpenseAdder },
+  { name: "To Do List", component: TasksMain },
+  { name: "Add Task", component: TaskAdder },
 ];
 
 LogBox.ignoreLogs(["Setting a timer for a long period of"]);
@@ -33,7 +37,7 @@ export default function App() {
     <StoreProvider store={store}>
       <PaperProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName={screens[2].name} headerMode="none">
+          <Stack.Navigator initialRouteName={screens[0].name} headerMode="none">
             {screens.map(({ name, component }) => <Stack.Screen key={name} name={name} component={component} />)}
           </Stack.Navigator>
         </NavigationContainer>
