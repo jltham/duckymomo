@@ -12,7 +12,6 @@ import LoadingScreen from './src/screens/LoadingScreen';
 import TxnMain from './src/screens/TxnMain';
 import ExpenseAdder from './src/screens/ExpenseAdder';
 import TasksMain from './src/screens/TasksMain';
-import TaskAdder from './src/screens/TaskAdder';
 
 import store from './src/store';
 import firebase from './api/firebase';
@@ -27,7 +26,6 @@ const screens = [
   { name: "Transactions", component: TxnMain },
   { name: "Expense", component: ExpenseAdder },
   { name: "To Do List", component: TasksMain },
-  { name: "Add Task", component: TaskAdder },
 ];
 
 LogBox.ignoreLogs(["Setting a timer for a long period of"]);
