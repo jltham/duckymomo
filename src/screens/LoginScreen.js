@@ -10,7 +10,6 @@ export default ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoginLoading, setIsLoginLoading] = useState(false);
-    const passwordTextInput = useRef();
   
     const handleLogin = () => {
       Keyboard.dismiss();

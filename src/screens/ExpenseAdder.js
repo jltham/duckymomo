@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import {addTransaction} from '../store/action/transactionActions';
+import { Picker } from "@react-native-picker/picker";
 import {useDispatch} from 'react-redux';
 
+import {addTransaction} from '../store/action/transactionActions';
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
 
@@ -10,6 +11,7 @@ export default ({navigation}) => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
+    const [type, setType] = useState();
 
     const onSubmit = () => {
         if (!title || !price) {
@@ -22,6 +24,7 @@ export default ({navigation}) => {
             id,
             title,
             price: +(-1 * price),
+            type,
         };
 
         dispatch(addTransaction({...newTransaction}));
@@ -36,6 +39,19 @@ export default ({navigation}) => {
                     </TouchableOpacity>
 
                     <Text style={styles.mainText}>What did you spend on?</Text>
+
+                    <Picker
+                    style={styles.picker}
+                    selectedValue={type}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setType(itemValue)
+                    }>
+                        <Picker.Item label="" value="" />
+                        <Picker.Item label="Food" value="food" />
+                        <Picker.Item label="Transport" value="transport" />
+                        <Picker.Item label="Shopping" value='shopping' />
+                        <Picker.Item label="Others" value='others' />
+                    </Picker>
 
                     <View style={styles.titleContainer}>
                         <Text style={styles.title}>Title of Expenditure</Text>
@@ -91,6 +107,11 @@ const styles = StyleSheet.create({
     mainText: {
         fontSize: 30,
         marginBottom:30
+    },
+    picker: {
+        marginTop: -45,
+        height: 200,
+        width: 200
     },
     title: {
         fontSize: 15,

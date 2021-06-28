@@ -1,23 +1,25 @@
-import React, { useState, useRef } from 'react';
+import React from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, Pressable, FlatList } from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import {deleteTransaction} from '../store/action/transactionActions';
+import { deleteTransaction } from '../store/action/transactionActions';
 import EmptyTxn from "../components/EmptyTxn";
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
 
-function Item({title, id, price}) {
+function Item({title, id, price, type}) {
     const dispatch = useDispatch();
 
     return (
         <View style={styles.item}>
-            {price > 0 ? (
-                <Text>Received {price} from {title}!</Text>
+            {type === "food" ? (
+                <Text>Munched on ${-1 * price} worth of {title}</Text>
+            ) : type === "transport" ? (
+                <Text>{title} had a fare of ${-1 * price}</Text>
             ) : (
-                <Text>Paid {price} for {title}</Text>
-            )}
-            
+                <Text>Shopped ({title}) and burnt ${-1 * price}</Text>
+            )
+            }
             <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => {
@@ -33,11 +35,27 @@ function Item({title, id, price}) {
 export default ({navigation}) => {
     const {transactions} = useSelector((state) => state.transactions);
 
-    const prices = transactions.map((item) => item.price);
-    const totalPrice = prices.reduce((prev, curr) => prev += curr, 0);
-    const totalExpenditure = prices
-    .filter((item) => item < 0)
+    const totalExpenditure = transactions.map((item) => item.price)
     .reduce((prev, curr) => prev += curr, 0) * -1;
+
+    const totalFood = transactions.filter((item) => item.type === "food")
+    .map((item) => item.price)
+    .reduce((prev, curr) => prev += curr, 0);
+
+    const totalTransport = transactions.filter((item) => item.type === "transport")
+    .map((item) => item.price)
+    .reduce((prev, curr) => prev += curr, 0);
+
+    const totalShopping = transactions.filter((item) => item.type === "shopping")
+    .map((item) => item.price)
+    .reduce((prev, curr) => prev += curr, 0);
+
+    const foodPercent = totalExpenditure > 0 ? (totalFood / totalExpenditure * -100).toFixed(2)
+                                             : 0;
+    const transportPercent = totalExpenditure > 0 ? (totalTransport / totalExpenditure * -100).toFixed(2)
+                                                  : 0;
+    const shoppingPercent = totalExpenditure > 0 ? (totalShopping / totalExpenditure * -100).toFixed(2)
+                                                 : 0;
 
     return (
         <Screen style={styles.container}>
@@ -47,12 +65,31 @@ export default ({navigation}) => {
             </TouchableOpacity>
 
             <View style={styles.info}>
-                <View style={styles.text}>
-                    <Text style={styles.text1}> My Expenses </Text>
-                    <Text style={styles.text1}> ${totalExpenditure}</Text> 
+                <View style={styles.numberBanner}>
+                    <View style={styles.text}>
+                        <Text style={styles.text1}> My Expenses </Text>
+                        <Text style={styles.text2}> ${totalExpenditure}</Text> 
+                    </View>
+
+                    <View style={styles.analysis}>
+                        <View style={styles.numberBanner}>
+                            <Image style={styles.food} source={require("../../assets/food-icon.png")} />
+                            <Text>{foodPercent}%</Text>
+                        </View>
+
+                        <View style={styles.numberBanner}>
+                            <Image style={styles.transport} source={require("../../assets/transport-icon.png")} />
+                            <Text>{transportPercent}%</Text>
+                        </View>
+
+                        <View style={styles.numberBanner}>
+                            <Image style={styles.shopping} source={require("../../assets/shopping-icon.png")} />
+                            <Text>{shoppingPercent}%</Text>
+                        </View>
+                    </View>
                 </View>
 
-                <TouchableOpacity style={styles.adder} onPress={() => navigation.navigate("TransactionsAdder")} >
+                <TouchableOpacity style={styles.adder} onPress={() => navigation.navigate("Expense")} >
                     <Text style={styles.adderText}>Add New Trans-Quack-Tion</Text>
                 </TouchableOpacity>
 
@@ -64,7 +101,7 @@ export default ({navigation}) => {
                         <FlatList 
                             data={transactions}
                             renderItem={({item}) => (
-                            <Item title={item.title} id={item.id} price={item.price} />
+                            <Item title={item.title} id={item.id} price={item.price} type={item.type} />
                             )}
                             keyExtractor={(item) => item.id.toString()}
                             style={styles.history} 
@@ -122,6 +159,9 @@ const styles = StyleSheet.create({
         left: -145,
         bottom: -70
     },
+    food: {
+        transform: [{scale: 0.5}]
+    },
     historyContainer: {
         backgroundColor: '#fefefe',
         borderColor: '#f3ecc6',
@@ -136,6 +176,7 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     info: {
+        top: -25,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -151,10 +192,30 @@ const styles = StyleSheet.create({
         resizeMode: 'center',
         alignSelf: 'center'
     },
+    numberBanner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    shopping: {
+        transform: [{scale: 0.6}]
+    },
     text: {
         marginBottom: 20,
     },
     text1: {
-        textAlign: 'center'
-    }
+        textAlign: 'center',
+        marginRight: 120,
+        bottom: 25
+    },
+    text2: {
+        textAlign: 'center',
+        fontSize: 60,
+        position: 'absolute',
+        left: -20,
+        top: -10,
+    },
+    transport: {
+        transform: [{scale: 0.55}]
+    },
 })

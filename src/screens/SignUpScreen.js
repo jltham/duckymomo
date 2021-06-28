@@ -37,7 +37,9 @@ export default ({ navigation }) => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <Screen scrollable style={styles.container}>
 
-                <Logo />
+                <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+                    <Logo />
+                </TouchableOpacity>
 
                 <View style={styles.textContainer}>
 
