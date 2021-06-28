@@ -12,6 +12,9 @@ export default () => {
 const styles = StyleSheet.create({
     logo: {
         resizeMode: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        //paddingTop: 10,
+        
+        //maxWidth: '90%'
     },
 })

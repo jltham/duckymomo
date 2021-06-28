@@ -33,7 +33,7 @@ export default function App() {
     <StoreProvider store={store}>
       <PaperProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName={screens[4].name} headerMode="none">
+          <Stack.Navigator initialRouteName={screens[2].name} headerMode="none">
             {screens.map(({ name, component }) => <Stack.Screen key={name} name={name} component={component} />)}
           </Stack.Navigator>
         </NavigationContainer>

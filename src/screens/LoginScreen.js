@@ -1,15 +1,19 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { CommonActions } from "@react-navigation/native";
 
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
 import * as Authentication from "../../api/auth";
+import { TextInput } from "react-native-paper";
+
 
 export default ({ navigation }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoginLoading, setIsLoginLoading] = useState(false);
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
   
     const handleLogin = () => {
       Keyboard.dismiss();
@@ -38,36 +42,57 @@ export default ({ navigation }) => {
                 <Logo />
                 
                 <View style={styles.textContainer}>
-                    <Text style={styles.font}>
-                        Email address
-                    </Text>
-
                     <TextInput
                     value={email}
                     onChangeText={setEmail}
-                    mode="outlined"
+                    mode="flat"
+                    theme={{
+                        colors: {
+                        primary: "black",
+                        underlineColor: "transparent",
+                        background: "#003489",
+                        },
+                    }}
                     label="Email address"
-                    placeholder="Your duck mail"
+                    placeholder="e.g. harrystyles@mail.com"
                     keyboardType="email-address"
                     autoCapitalize="none"
                     returnKeyType="next"
                     blurOnSubmit={false}
-                    style={styles.input} />
-
-                    <Text style={styles.font}>
-                        Password
-                    </Text>
+                    style={styles.input}
+                    left={<TextInput.Icon name="account" color={"#0c4271"} />}
+                    />
 
                     <TextInput
-                    value={password}
-                    onChangeText={setPassword}
-                    mode="outlined"
-                    label="Password"
-                    placeholder="Your secret quack"
-                    autoCapitalize="none"
+                    mode="flat"
                     style={styles.input}
-                    secureTextEntry={true}
-                    />
+                    label="Password"
+                    placeholder="e.g. iLoveHarry"
+                    theme={{
+                      colors: {
+                        primary: "black",
+                        underlineColor: "transparent",
+                        background: "#003489",
+                      },
+                    }}
+                    onChangeText={setPassword}
+                    secureTextEntry={!isPasswordVisible}
+                    autoCapitalize="none"
+                    left={
+                      <TextInput.Icon
+                        name="form-textbox-password"
+                        color={"#0c4271"}
+                      />
+                    }
+                    right={
+                      <TextInput.Icon
+                        color={"#0c4271"}
+                        name={isPasswordVisible ? "eye-off" : "eye"}
+                        onPress={() => setIsPasswordVisible((state) => !state)}
+                      />
+                    }
+                  
+                />
 
                 </View>
 
@@ -105,13 +130,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingTop: 30
     },
-    input: {
-        backgroundColor: "#e1e1e1",
-        height: 40,
-        width: 270,
-        borderWidth: 1,
-        borderColor: "#d0d0d0",
-    },
     logo: {
         resizeMode: 'center',
         alignSelf: 'center'
@@ -121,17 +139,30 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     signUpButton: {
+        //top: '25%',
         transform: [{scale: 0.5}],
     },
     signUpContainer: {
         alignItems: 'center',
     },
     signUpText: {
+        //paddingTop: 100,
+        alignSelf: "center",
+        color: "black",
         fontSize: 20,
-        paddingTop: 100
+        fontFamily: "Avenir",
+        fontWeight: "600",
     },
     textContainer: {
         alignItems: 'center',
         
-    }
+    },
+    input: {
+        height: 50,
+        width: "80%",
+        backgroundColor: "white",
+        marginBottom: 20,
+        fontSize: 15,
+        opacity: 0.85,
+      },
 })
