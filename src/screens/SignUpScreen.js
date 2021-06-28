@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { TextInput } from "react-native-paper";
 import { CommonActions } from "@react-navigation/native"
-
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
-
 import * as Authentication from '../../api/auth';
 
 export default ({ navigation }) => {
@@ -12,7 +11,8 @@ export default ({ navigation }) => {
     const [ password, onChangePassword ] = React.useState("");
     const [ username, onChangeName ] = React.useState("");
     const [isRegisterLoading, setIsRegisterLoading] = useState(false);
-    
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
     const handleRegister = () => {
         Keyboard.dismiss();
         setIsRegisterLoading(true);
@@ -42,53 +42,68 @@ export default ({ navigation }) => {
                 </TouchableOpacity>
 
                 <View style={styles.textContainer}>
+                    <Text style={styles.logoName}>Get started!</Text>
 
-                    <Text style={styles.font}>
-                        Full name
-                    </Text>
+                <TextInput
+                    label="Your name"
+                    placeholder="e.g. Harry Styles"
+                    style={styles.input}
+                    onChangeText={onChangeName}
+                    value={username}
+                    autoCapitalize="words"
+                    returnKeyType="next"
+                    blurOnSubmit={false}
+                    theme={{
+                    colors: {
+                        primary: "black",
+                        underlineColor: "transparent",
+                        background: "#0c4271",
+                    },
+                    }}
+                    left={<TextInput.Icon name="account" color={"#0c4271"} />}
+                />
 
-                    <TextInput 
-                        label="Your name"
-                        placeholder="e.g., Albert Einstein Tan Chow Boon"
-                        style={styles.input}
-                        onChangeText={onChangeName}
-                        value={username} 
-                        autoCapitalize="words"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
+                <TextInput
+                    style={styles.input}
+                    label="Email"
+                    placeholder="e.g. harrystyles@mail.com"
+                    theme={{ colors: { primary: "black" } }}
+                    onChangeText={onChangeEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    returnKeyType="next"
+                    value={email}
+                    onSubmitEditing={() => passwordTextInput.current.focus()}
+                    left={<TextInput.Icon name="at" color={"#0c4271"} />}
+                />
+
+                <TextInput
+                    mode="flat"
+                    label="Password"
+                    placeholder="e.g. iLoveHarry"
+                    autoCapitalize="none"
+                    style={styles.input}
+                    onChangeText={onChangePassword}
+                    value={password}
+                    theme={{
+                    colors: {
+                        primary: "black",
+                        underlineColor: "transparent",
+                        background: "#0c4271",
+                    },
+                    }}
+                    secureTextEntry={!isPasswordVisible}
+                    left={
+                    <TextInput.Icon name="form-textbox-password" color={"#0c4271"} />
+                    }
+                    right={
+                    <TextInput.Icon
+                        color = {"#0c4271"}
+                        name={isPasswordVisible ? "eye-off" : "eye"}
+                        onPress={() => setIsPasswordVisible((state) => !state)}
                     />
-                    
-                    <Text style={styles.font}>
-                        Email address
-                    </Text>
-
-                    <TextInput 
-                        mode="outlined"
-                        label="Email address"
-                        placeholder="e.g., josh@example.com"
-                        keyboardType="email-address"
-                        style={styles.input} 
-                        onChangeText={onChangeEmail}
-                        value={email}
-                        autoCapitalize="none"
-                        returnKeyType="next"
-                        blurOnSubmit={false}
-                    />
-
-                    <Text style={styles.font}>
-                        Password
-                    </Text>
-
-                    <TextInput 
-                        mode="outlined"
-                        label="Password"
-                        placeholder="e.g., who knows?"
-                        autoCapitalize="none"
-                        style={styles.input} 
-                        onChangeText={onChangePassword}
-                        value={password}
-                        secureTextEntry={true}
-                    />
+                    }
+                />
 
                     <TouchableOpacity style={styles.signUpButton} onPress={handleRegister}>
                         <Image source={require('../../assets/sign-up-button.png')}></Image>
@@ -99,7 +114,6 @@ export default ({ navigation }) => {
                     </TouchableOpacity>
 
                 </View>
-
             </Screen>
         </TouchableWithoutFeedback>
     );
@@ -115,14 +129,24 @@ const styles = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 5,
     },
-    input: {
-        backgroundColor: "#e1e1e1",
-        height: 40,
-        width: 320,
-        borderWidth: 1,
-        borderColor: "#d0d0d0",
+    logoName: {
+        marginTop: "20%",
+        marginHorizontal: "10%",
+        paddingBottom: "2%",
+        fontSize: 50,
+        fontFamily: "AvenirNext-Bold",
+        alignSelf: "flex-end",
     },
+    input: {
+        height: 50,
+        width: "80%",
+        backgroundColor: "white",
+        marginBottom: 20,
+        fontSize: 15,
+        opacity: 0.85,
+      },
     loginButton: {
+        marginTop: '-10%',
         transform: [{scale: 0.5}]
     },
     logo: {
