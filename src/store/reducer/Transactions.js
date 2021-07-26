@@ -1,8 +1,8 @@
 import { ADD_TRANSACTION, DELETE_TRANSACTION } from "../action/types";
+import * as Transactions from '../../../api/firestore';
 
 const initialState = {
-    transactions: [
-    ]
+    transactions: [],
 };
 
 export default (state = initialState, {type, payload}) => {

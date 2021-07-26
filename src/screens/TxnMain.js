@@ -1,8 +1,9 @@
-import React from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, Pressable, FlatList } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { deleteTransaction } from '../store/action/transactionActions';
+import * as Transactions from '../../api/firestore';
 import EmptyTxn from "../components/EmptyTxn";
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
@@ -13,17 +14,23 @@ function Item({title, id, price, type}) {
     return (
         <View style={styles.item}>
             {type === "food" ? (
-                <Text>Munched on ${-1 * price} worth of {title}</Text>
+                <Text style={styles.itemText}>Munched on ${1 * price} worth of {title}</Text>
             ) : type === "transport" ? (
-                <Text>{title} had a fare of ${-1 * price}</Text>
+                <Text style={styles.itemText}>{title} had a fare of ${1 * price}</Text>
             ) : (
-                <Text>Shopped ({title}) and burnt ${-1 * price}</Text>
+                <Text style={styles.itemText}>Shopped for {title} and spent ${1 * price}</Text>
             )
             }
             <TouchableOpacity
                 style={styles.deleteButton}
                 onPress={() => {
-                    dispatch(deleteTransaction(id));
+                    Transactions.remove(
+                        {id},
+                        (str) => {
+                            dispatch(deleteTransaction(str));
+                        },
+                        () => console.log("Failed to delete")
+                    )
                 }}
             >
                 <Text style={styles.cross}> X </Text>
@@ -33,28 +40,42 @@ function Item({title, id, price, type}) {
 }
 
 export default ({navigation}) => {
+    const [transactionsLog, setTransactionsLog] = useState([])
+
+    useEffect(() => {
+        Transactions.transactionsRef.get().then((res)=>{
+            setTransactionsLog(res.docs);
+        });
+        // try {
+        //     res = await Transactions.transactionsRef.get();
+        //     setTransactionsLog(res);
+        // } catch (error) {
+        //     console.log("Not happening");
+        // }
+    }, [])
+
     const {transactions} = useSelector((state) => state.transactions);
 
-    const totalExpenditure = transactions.map((item) => item.price)
-    .reduce((prev, curr) => prev += curr, 0) * -1;
+    const totalExpenditure = transactionsLog.map((item) => item.data().price)
+    .reduce((prev, curr) => prev += curr, 0) * 1;
 
-    const totalFood = transactions.filter((item) => item.type === "food")
-    .map((item) => item.price)
+    const totalFood = transactionsLog.filter((item) => item.data().type === "food")
+    .map((item) => item.data().price)
     .reduce((prev, curr) => prev += curr, 0);
 
-    const totalTransport = transactions.filter((item) => item.type === "transport")
-    .map((item) => item.price)
+    const totalTransport = transactionsLog.filter((item) => item.data().type === "transport")
+    .map((item) => item.data().price)
     .reduce((prev, curr) => prev += curr, 0);
 
-    const totalShopping = transactions.filter((item) => item.type === "shopping")
-    .map((item) => item.price)
+    const totalShopping = transactionsLog.filter((item) => item.data().type === "shopping")
+    .map((item) => item.data().price)
     .reduce((prev, curr) => prev += curr, 0);
 
-    const foodPercent = totalExpenditure > 0 ? (totalFood / totalExpenditure * -100).toFixed(2)
+    const foodPercent = totalExpenditure > 0 ? (totalFood / totalExpenditure * 100).toFixed(2)
                                              : 0;
-    const transportPercent = totalExpenditure > 0 ? (totalTransport / totalExpenditure * -100).toFixed(2)
+    const transportPercent = totalExpenditure > 0 ? (totalTransport / totalExpenditure * 100).toFixed(2)
                                                   : 0;
-    const shoppingPercent = totalExpenditure > 0 ? (totalShopping / totalExpenditure * -100).toFixed(2)
+    const shoppingPercent = totalExpenditure > 0 ? (totalShopping / totalExpenditure * 100).toFixed(2)
                                                  : 0;
 
     return (
@@ -97,11 +118,11 @@ export default ({navigation}) => {
                     
                     <Text style={styles.historyText}> History </Text>
 
-                    {transactions.length > 0 ? (
+                    {transactionsLog.length > 0 ? (
                         <FlatList 
-                            data={transactions}
+                            data={transactionsLog}
                             renderItem={({item}) => (
-                            <Item title={item.title} id={item.id} price={item.price} type={item.type} />
+                                <Item id={item.id} title={item.data().title} price={item.data().price} type={item.data().type} />
                             )}
                             keyExtractor={(item) => item.id.toString()}
                             style={styles.history} 
@@ -187,6 +208,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flex: 1,
         justifyContent: 'space-between',
+    },
+    itemText: {
+        maxWidth: 200,
     },
     logo: {
         resizeMode: 'center',

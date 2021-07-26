@@ -4,6 +4,7 @@ import { Picker } from "@react-native-picker/picker";
 import {useDispatch} from 'react-redux';
 
 import {addTransaction} from '../store/action/transactionActions';
+import * as Transactions from '../../api/firestore';
 import Screen from "../components/Screen";
 import Logo from "../components/Logo";
 
@@ -11,24 +12,30 @@ export default ({navigation}) => {
     const dispatch = useDispatch();
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
-    const [type, setType] = useState();
+    const [type, setType] = useState("");
 
     const onSubmit = () => {
-        if (!title || !price) {
+        if (!title || !price || type == "") {
             return alert('Please fill all fields');
+        } else if (price > 9999) {
+            return alert('That is too much money for the duck bank to manage!!')
         }
+        
+        Transactions.create(
+            {title, price, type},
+            (id) => {
+                const newTransaction = {
+                    id,
+                    title,
+                    price: +(-1 * price),
+                    type,
+                };
 
-        const id = Math.floor(Math.random() * 100000000);
-
-        const newTransaction = {
-            id,
-            title,
-            price: +(-1 * price),
-            type,
-        };
-
-        dispatch(addTransaction({...newTransaction}));
-        navigation.navigate("Transactions");
+                dispatch(addTransaction({...newTransaction}));
+                navigation.navigate("Transactions");
+            },
+            () => 0
+        );
     };
 
     return (
