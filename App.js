@@ -10,7 +10,6 @@ import MainScreen from './src/screens/MainScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import TxnMain from './src/screens/TxnMain';
-import ExpenseAdder from './src/screens/ExpenseAdder';
 import TasksMain from './src/screens/TasksMain';
 
 import store from './src/store';
@@ -24,7 +23,7 @@ const screens = [
   { name: "Login", component: LoginScreen },
   { name: "Main", component: MainScreen },
   { name: "Transactions", component: TxnMain },
-  { name: "Expense", component: ExpenseAdder },
+  //{ name: "Expense", component: ExpenseAdder },
   { name: "To Do List", component: TasksMain },
 ];
 
