@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { Modal, StyleSheet, View, Text, TextInput, TouchableOpacity, Image, Keyboard, Pressable, FlatList } from 'react-native';
+import { Modal, StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Image, Keyboard, Pressable, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { addTask, deleteTask } from '../store/action/tasksActions';
 import Screen from '../components/Screen';
 import Logo from '../components/Logo';
 import EmptyList from '../components/EmptyList';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 function Task({ title, id }) {
     const dispatch = useDispatch();
@@ -50,6 +51,11 @@ export default ({navigation}) => {
             <TouchableOpacity onPress={() => navigation.navigate("Main")}>
                 <Logo />
             </TouchableOpacity>
+            <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.navigate("Main")}>
+          <Icon name="chevron-left" size={25} color="black" />
+        </TouchableOpacity>
             
             <Text style={styles.header}> TO DO LIST </Text>
 
@@ -79,6 +85,8 @@ export default ({navigation}) => {
                         setModalVisible(!modalVisible);
                     }}
                     >
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
                                 <Text style={styles.modalTitle}>Add new title!</Text>
@@ -111,6 +119,8 @@ export default ({navigation}) => {
                                 </View>
                             </View>
                         </View>
+                        </TouchableWithoutFeedback>
+
                     </Modal>
 
                     <TouchableOpacity style={styles.adderButton} onPress={() => setModalVisible(true)}>
@@ -162,10 +172,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     listContainer: {
-        backgroundColor: "#e6e5e1",
+        backgroundColor: "white",
         width: 370,
         height: 400,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        borderRadius: 40
     },
     modalButton: {
         backgroundColor: "#ffdb78",
@@ -224,5 +235,10 @@ const styles = StyleSheet.create({
         fontSize: 20,
         maxWidth: 300,
         flexWrap: 'wrap-reverse',
+    },
+    backButton: {
+        position: 'absolute',
+        top: "20%",
+        left: "3%"
     }
 })

@@ -1,18 +1,18 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import config from '../config';
+//import config from '../config';
 
-const firebaseConfig = {
-  apiKey: config.API_KEY,
-  authDomain: config.AUTH_DOMAIN,
-  databaseURL: config.DATABASE_URL,
-  projectId: config.PROJECT_ID,
-  storageBucket: config.STORAGE_BUCKET,
-  messagingSenderId: config.MESSAGING_SENDER_ID,
-  appId: config.APP_ID,
-  measurementId: config.MEASUREMENT_ID
-}
+var firebaseConfig = {
+  apiKey: "AIzaSyD9QrtDtHJLoZiDWg819XaQTkvM02K30oU",
+  authDomain: "duckymomo-dc56c.firebaseapp.com",
+  databaseURL: "https://duckymomo-dc56c-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "duckymomo-dc56c",
+  storageBucket: "duckymomo-dc56c.appspot.com",
+  messagingSenderId: "619208254780",
+  appId: "1:619208254780:web:912743f3157aed2b916a39",
+  measurementId: "G-K6E7DKYCC9"
+};
 
 const firebaseApp = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
