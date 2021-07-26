@@ -23,7 +23,6 @@ const screens = [
   { name: "Login", component: LoginScreen },
   { name: "Main", component: MainScreen },
   { name: "Transactions", component: TxnMain },
-  //{ name: "Expense", component: ExpenseAdder },
   { name: "To Do List", component: TasksMain },
 ];
 

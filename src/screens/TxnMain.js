@@ -14,7 +14,7 @@ import Logo from "../components/Logo";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 
-function Item({title, id, price, type}) {
+function Item({updateDisplay, title, id, price, type}) {
     const dispatch = useDispatch();
 
     return (
@@ -34,6 +34,7 @@ function Item({title, id, price, type}) {
                         {id},
                         (str) => {
                             dispatch(deleteTransaction(str));
+                            updateDisplay();
                         },
                         () => console.log("Failed to delete")
                     )
@@ -48,19 +49,15 @@ function Item({title, id, price, type}) {
 export default ({navigation}) => {
     const [transactionsLog, setTransactionsLog] = useState([])
 
-    useEffect(() => {
+    const updateDisplay = () => {
         Transactions.transactionsRef.get().then((res)=>{
             setTransactionsLog(res.docs);
         });
-        // try {
-        //     res = await Transactions.transactionsRef.get();
-        //     setTransactionsLog(res);
-        // } catch (error) {
-        //     console.log("Not happening");
-        // }
-    }, [])
+    }
 
-    const {transactions} = useSelector((state) => state.transactions);
+    useEffect(() => {
+        updateDisplay();
+    }, [])
 
     const totalExpenditure = transactionsLog.map((item) => item.data().price)
     .reduce((prev, curr) => prev += curr, 0) * 1;
@@ -89,6 +86,7 @@ export default ({navigation}) => {
     const [title, setTitle] = useState('');
     const [type, setType] = useState("");   
     const [price, setPrice] = useState(''); 
+
     const onSubmit = () => {
         if (!title || !price || type == "") {
             return alert('Please fill all fields');
@@ -108,10 +106,9 @@ export default ({navigation}) => {
                 };
 
                 dispatch(addTransaction({...newTransaction}));
-                navigation.navigate("Transactions");
+                updateDisplay();
             },
             () => 0,
-            
         );
             setModalVisible(!modalVisible);
     };
@@ -249,7 +246,7 @@ export default ({navigation}) => {
                         <FlatList 
                             data={transactionsLog}
                             renderItem={({item}) => (
-                                <Item id={item.id} title={item.data().title} price={item.data().price} type={item.data().type} />
+                                <Item updateDisplay={updateDisplay} id={item.id} title={item.data().title} price={item.data().price} type={item.data().type} />
                             )}
                             keyExtractor={(item) => item.id.toString()}
                             style={styles.history} 

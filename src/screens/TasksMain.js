@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, StyleSheet, View, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, Image, Keyboard, Pressable, FlatList } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -7,8 +7,10 @@ import Screen from '../components/Screen';
 import Logo from '../components/Logo';
 import EmptyList from '../components/EmptyList';
 import Icon from "react-native-vector-icons/FontAwesome";
+import * as Tasks from '../../api/firestore';
 
-function Task({ title, id }) {
+
+function Task({ updateDisplay, title, id }) {
     const dispatch = useDispatch();
 
     return (
@@ -17,7 +19,13 @@ function Task({ title, id }) {
                 <Text style={styles.title}> {title} </Text>
             </View>
 
-            <TouchableOpacity onPress={() => {dispatch(deleteTask(id));}}>
+            <TouchableOpacity onPress={() => Tasks.deleteTask({id}, 
+                (str) => {
+                    dispatch(deleteTask(str));
+                    updateDisplay();
+                }, 
+                () => console.log("Failed to delete task"))
+            }>
                 <Image source={require("../../assets/check-icon.png")} style={styles.checked} />            
             </TouchableOpacity>
         </View>
@@ -25,8 +33,19 @@ function Task({ title, id }) {
 }
 
 export default ({navigation}) => {
+    const [tasksLog, setTasksLog] = useState([]);
+
+    const updateDisplay = () => {
+        Tasks.tasksRef.get().then((res)=>{
+            setTasksLog(res.docs);
+        });
+    }
+
+    useEffect(() => {
+        updateDisplay();
+    }, [])
+
     const dispatch = useDispatch();
-    const {tasks} = useSelector((state) => state.tasks);
     const [modalVisible, setModalVisible] = useState(false);
     const [title, setTitle] = useState('');
 
@@ -34,15 +53,19 @@ export default ({navigation}) => {
         if (!title) {
             return alert('Please fill all fields');
         }
+        
+        Tasks.addTask({ title },
+            (id) => {
+                const newTask = {
+                    id,
+                    title,
+                };
+                
+                dispatch(addTask({...newTask}));
+                updateDisplay();
+            }, () => 0
+        )
 
-        const id = Math.floor(Math.random() * 100000000);
-
-        const newTask = {
-            id,
-            title,
-        };
-
-        dispatch(addTask({...newTask}));
         setModalVisible(!modalVisible);
     };
     
@@ -60,12 +83,11 @@ export default ({navigation}) => {
             <Text style={styles.header}> TO DO LIST </Text>
 
             <View style={styles.listContainer}>
-                {tasks.length > 0 ? (
+                {tasksLog.length > 0 ? (
                     <FlatList 
-                        // data={tasks.sort((a, b) => a.date.localeCompare(b.date))}
-                        data={tasks}
+                        data={tasksLog}
                         renderItem={({item}) => (
-                        <Task title={item.title} id={item.id} />
+                            <Task updateDisplay={updateDisplay} title={item.data().title} id={item.id} />
                         )}
                         keyExtractor={(item) => item.id.toString()}
                         style={styles.tasksList}
