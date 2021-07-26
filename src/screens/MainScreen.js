@@ -21,7 +21,7 @@ export default ({navigation}) => {
         <Icon name="sign-out" size={35} color="orange" />
         </TouchableOpacity>
 
-            <Text> BE POSITIVE! </Text>
+            <Text style={styles.mainMsg} > BE POSITIVE! </Text>
 
             <TouchableOpacity style={styles.duckBank} onPress={() => navigation.navigate("Transactions")}>
                 <DuckBank />
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     },
     logOutButton: {
         position: "absolute",
-        top: "9%",
+        top: "20%",
         right: "5%",
       },
     duckBank: {
@@ -56,5 +56,13 @@ const styles = StyleSheet.create({
         position: "absolute",
         bottom: 25,
         right: -62,
+    },
+    mainMsg: {
+        marginTop: "20%",
+        marginHorizontal: "10%",
+        paddingBottom: "2%",
+        fontSize: 50,
+        fontFamily: "AvenirNext-Bold",
+        alignSelf: "flex-end",
     }
 })
