@@ -40,6 +40,7 @@ export default ({ navigation }) => {
             <Screen scrollable style={styles.container}>
                 
                 <Logo />
+                <Text style={styles.logoName}>Welcome!</Text>
 
                 
                 <View style={styles.textContainer}>
@@ -136,12 +137,12 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     logoName: {
-      //marginTop: "20%",
+      marginTop: "20%",
       marginHorizontal: "10%",
       paddingBottom: "2%",
-      fontSize: 45,
+      fontSize: 50,
       fontFamily: "AvenirNext-Bold",
-      alignSelf: "flex-start",
+      alignSelf: "flex-end",
     },
     loginButtonFinal: {
         transform: [{scale: 0.5}],
@@ -164,16 +165,16 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     textContainer: {
-      marginTop:'45%',
+      //marginTop:'45%',
       alignItems: 'center',
         
     },
     input: {
-        height: 50,
-        width: "80%",
-        backgroundColor: "white",
-        marginBottom: 20,
-        fontSize: 15,
-        opacity: 0.85,
-      },
+      height: 50,
+      width: "80%",
+      backgroundColor: "white",
+      marginBottom: 20,
+      fontSize: 15,
+      opacity: 0.85,
+    },
 })

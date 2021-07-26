@@ -21,7 +21,7 @@ export default ({navigation}) => {
         <Icon name="sign-out" size={35} color="orange" />
         </TouchableOpacity>
 
-            <Text> This is the main screen! </Text>
+            <Text> BE POSITIVE! </Text>
 
             <TouchableOpacity style={styles.duckBank} onPress={() => navigation.navigate("Transactions")}>
                 <DuckBank />
